@@ -1,6 +1,6 @@
 # Designing with AID
 
-> **Status: current (v0.22.0)** — for architects: designing a new solution with SDEM's *Architecture Inference Design* (AID). You write what you know; `sdem aid` fills in what is missing, marked so you can see — and decide on — every record it added.
+> **Status: current (v0.22.1)** — for architects: designing a new solution with SDEM's *Architecture Inference Design* (AID). You write what you know; `sdem aid` fills in what is missing, marked so you can see — and decide on — every record it added.
 
 ## What you give it, what it gives you
 
@@ -19,9 +19,9 @@
 
 ## Step by step — a real example
 
-**1. Start the workspace** — all four layers empty; BIAN's 258 service domains are read from the catalogue, not copied:
+**1. Start the workspace** — a banking design, so with BIAN (`sdem-bian` installed): every layer empty; BIAN's 258 service domains are read from the catalogue, not copied:
 ```bash
-sdem new --workspace workspaces/payments --person jane.architect
+sdem new --workspace workspaces/payments --person jane.architect --with bian
 ```
 
 **2. Write what you know** as a change set — here a capability *Payment Initiation*, a process *Make a payment* and two activities, *Initiate payment order* and *Execute payment*, each naming the BIAN operations it uses (`sdem bian search payment order`) — and land it with `sdem change propose <file> --workspace workspaces/payments --agent architect --person jane.architect` (`--dry-run` first; the fields and allowed values: `sdem types A1`). Or ask your agent: `/sdem-new-design`. Step by step: [Create a new design](sdem-new-design.md). (Editing `a1-business.json` directly also works, but `sdem check` then reports it as an unrecorded edit until a person adopts it with `sdem change adopt`.)

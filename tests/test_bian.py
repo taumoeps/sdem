@@ -215,7 +215,7 @@ class BaseBianTests(unittest.TestCase):
         readme = (Path(bian.__file__).parent / 'data' / 'catalogue' / 'README.md').read_text()
         for must in ('github.com/bian-official/public', 'Apache License 2.0', 'left out', 'not affiliated with, endorsed by'):
             self.assertIn(must, readme)
-        self.assertIn('bian/base-14.0.0.json', (ROOT / 'THIRD_PARTY.md').read_text())
+        self.assertIn('sdem_bian/data/catalogue/base-14.0.0.json', (ROOT / 'THIRD_PARTY.md').read_text())   # 0.22: the base BIAN is sdem-bian's (BX-15)
 
     def test_import_from_the_base(self):  # BB-C01
         out = self.tmp / 'a2.json'

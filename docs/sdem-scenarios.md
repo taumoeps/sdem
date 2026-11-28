@@ -38,11 +38,13 @@ sdem profile show --workspace workspaces/ledger                                 
 sdem types A3 --workspace workspaces/ledger                                          # what you may write, the profile's fields included
 ```
 
+**A banking design** uses BIAN: install the `sdem-bian` extension and add `--with bian` to `sdem new --workspace …` (the ledger in these scenarios is one). Without it, a workspace is SDEM's core design — Business, Data, Application, Technology — for any industry.
+
 **A person decides:** starting the organisation and each workspace. A workspace on its own (no organisation) is `sdem new --workspace workspaces/ledger --person your.name`; an existing workspace takes a profile with `sdem profile adopt` (scenario 11).
 
 ## 2. Explore the bundled example
 
-**Goal:** see a complete, made-up Payments architecture — the knowledge graph, dashboard and workbench — in one step.
+**Goal:** see a complete, made-up Payments architecture — the knowledge graph, dashboard and workbench — in one step. It ships with the `sdem-bian` extension; SDEM's own example, without BIAN, is `--example library-holds`.
 
 ```bash
 sdem new --workspace workspaces/payments --person your.name --example payment-initiation --explore

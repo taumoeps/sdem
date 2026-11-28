@@ -50,6 +50,10 @@ def collect(ws):
             if len(ids) > 1: duplicates.append({'layer': l, 'type': loose[0], 'ids': ids, 'same_key': any(len(v) > 1 for v in by_exact.values()),
                                                 'rule': 'LC-09' if any(len(v) > 1 for v in by_exact.values()) else 'LC-09n'})
     errors = [{'layer': x['level'], 'text': e} for x in d['layers'] for e in x.get('errors', [])]
+    try: started = _j(Path(ws) / 'workspace.json').get('hosting')   # LC-16 is an error in a workspace started with its zones, as sdem check says (WS-12)
+    except (OSError, ValueError, AttributeError): started = None
+    zoned = {(x['level'], e) for x in d['layers'] for e in x.get('advice', []) if started and 'LC-16' in e}
+    errors += [{'layer': l, 'text': f"{e} — an error here: the workspace was started with its zones ({started.get('template')}, sdem new --hosting)"} for l, e in sorted(zoned)]
     from .agents import Estate, CoordinationError
     try: status = {r['id']: r for r in Estate(ws).status()}
     except (CoordinationError, OSError, ValueError): status = {}
@@ -173,7 +177,7 @@ def collect(ws):
             'possible_duplicates': duplicates, 'records_without_source': unsourced, 'links': links, 'events_to_plan': events, 'compliance': comp,
             'commands_for_the_person': commands,
             # read by sdem status (ST-01): the registry's own errors, the checks' advice, edits made outside SDEM, and the layers' size
-            'registry_errors': d['registry']['errors'], 'advice': [{'layer': x['level'], 'text': e} for x in d['layers'] for e in x.get('advice', [])],
+            'registry_errors': d['registry']['errors'], 'advice': [{'layer': x['level'], 'text': e} for x in d['layers'] for e in x.get('advice', []) if (x['level'], e) not in zoned],
             'direct_edits': d['changes']['direct_edits'], 'layers': [{'level': x['level'], 'title': x['title'], 'records': x['records'], 'relationships': x['relationships']} for x in d['layers']],
             'missing_layers': d['missing_layers'], 'registry': {'links': d['registry']['links'], 'by_status': d['registry']['by_status']}}
 

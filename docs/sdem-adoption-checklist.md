@@ -1,6 +1,6 @@
 # Adopting SDEM — the checklist for your organisation
 
-> **Status: current (v0.22.0)** — what an organisation should clear before SDEM holds its real architecture: legal and licences, data, security, AI, and the risk of depending on an open-source tool. It lists the questions and the facts behind them; **it is not legal advice** — your legal, risk and security teams decide. Who does what afterwards: the [operating model](sdem-operating-model.md).
+> **Status: current (v0.22.1)** — what an organisation should clear before SDEM holds its real architecture: legal and licences, data, security, AI, and the risk of depending on an open-source tool. It lists the questions and the facts behind them; **it is not legal advice** — your legal, risk and security teams decide. Who does what afterwards: the [operating model](sdem-operating-model.md).
 
 ## 1. Legal and intellectual property
 
@@ -8,10 +8,10 @@
 |---|---|---|---|
 | May we put our architecture designs into a tool we run ourselves? | SDEM runs on your machines and keeps data as files in **your** private repository; nothing goes to the SDEM project or anyone else | legal / IP | ☐ |
 | May we use SDEM's licence? | **Apache-2.0** for everything — code, metamodel, documentation, templates (`LICENSE`, `LICENSES.md`); in plain words: [using SDEM](sdem-licence-and-use.md) | legal / open-source review | ☐ |
-| May we use the base BIAN? | BIAN's public **Semantic APIs 14.0.0**, published by BIAN e.V. under **Apache-2.0**, ship with SDEM (`bian/`, with BIAN's licence and a statement of what was changed). If you are a BIAN member, check your membership terms too; BIAN® is BIAN's trademark | legal | ☐ |
+| May we use the base BIAN? | BIAN's public **Semantic APIs 14.0.0**, published by BIAN e.V. under **Apache-2.0**, ship with the `sdem-bian` extension, not with SDEM (beside its catalogue, with BIAN's licence and a statement of what was changed); a design without BIAN needs neither. If you are a BIAN member, check your membership terms too; BIAN® is BIAN's trademark | legal | ☐ |
 | Does SDEM claim to be BIAN-endorsed? | No — it is independent and says so (`THIRD_PARTY.md`) | — | ☐ |
 | Names from published standards | SDEM's metamodel uses concept names from BIAN, ArchiMate® and TOGAF® (no text copied); ArchiMate and TOGAF are published by The Open Group behind a sign-in. Whether using these names and trademarks needs anything more is a question for your legal team | legal | ☐ |
-| Who owns what we create with it? | Your data and the connections your architects approve are yours; SDEM adds no content of its own to them — except the BIAN content you choose to import into your A2 layer, which stays under BIAN's Apache-2.0 licence (keep `bian/LICENSE`) | legal | ☐ |
+| Who owns what we create with it? | Your data and the connections your architects approve are yours; SDEM adds no content of its own to them — except the BIAN content you choose to import into your A2 layer, which stays under BIAN's Apache-2.0 licence (keep the `LICENSE` beside `sdem-bian`'s catalogue) | legal | ☐ |
 
 ## 2. Data
 

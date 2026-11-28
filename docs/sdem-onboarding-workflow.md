@@ -64,7 +64,7 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | # | Command | In plain words |
 |---|---|---|
-| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept; BIAN's service domains are read from the catalogue |
+| 0 | `sdem new --workspace workspaces/history --person <you> --with bian` (a banking design; without `--with bian`, a core design) | **Start the workspace** — once. Creates the folder where this area's architecture is kept; BIAN's service domains are read from the catalogue |
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |
@@ -109,11 +109,11 @@ Every command's full options: the [user guide's command reference](sdem-workbenc
 
 | Source | When | How |
 |---|---|---|
-| **The base BIAN that ships with SDEM** (recommended to start) | always — BIAN's public Semantic APIs 14.0.0 are inside SDEM (Apache-2.0, see `bian/README.md`) | `sdem bian import --base --all -o work/bian/a2-service-domain.json` (or `--only` the domains you use) — nothing to download; checked, with a report |
+| **The base BIAN that ships with `sdem-bian`** (recommended to start) | once `sdem-bian` is installed — BIAN's public Semantic APIs 14.0.0 are inside it (Apache-2.0, see the README beside its catalogue) | `sdem bian import --base --all -o work/bian/a2-service-domain.json` (or `--only` the domains you use) — nothing to download; checked, with a report |
 | **Your organisation's own BIAN** | you have a newer release, your own selection or your own extensions, in BIAN's format | pack it once: `sdem bian pack <folder> -o bian/our-bian.json` (keep it in your workspace repository), then `--base bian/our-bian.json` instead of `--base`; or import straight from the folder |
 | **Your organisation's BIAN catalogue in another format** | e.g. a member's model export | convert it to SDEM's A2 format (the file below); `sdem check` validates it |
 | **A starter file, by hand** | you have no catalogue yet | list the service domains your area uses, from BIAN's public Service Landscape — **names only, described in your own words** (do not copy BIAN text) — as below |
-| **None yet** | you want to start without BIAN | `sdem new --no-bian`; applications still connect to technology — but **business does not connect to applications at all**, because every one of SDEM's connections between those layers passes through BIAN. Add the layer before you need business-to-technology traces |
+| **None** | a design without BIAN — any industry | `sdem new` without `--with bian`: SDEM's core design — business connects to applications directly (*served by*, *realised by*), data to both; `sdem-bian` is not needed |
 
 **Which service domains to import.** Three ways:
 

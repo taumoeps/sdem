@@ -1,6 +1,6 @@
 # SDEM operating model — running SDEM for real
 
-> **Status: current (v0.22.0)**. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and metamodel changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
+> **Status: current (v0.22.1)**. How an organisation runs SDEM on real architecture data: where things live, who does what, how changes, upgrades and metamodel changes flow, support, and what has to be true before starting. The pilot that tests it: [`sdem-pilot-plan.md`](sdem-pilot-plan.md).
 
 ## 1. Where things live
 
@@ -101,7 +101,7 @@ SDEM failures say what to do: exit `1` a check refused (read the message), `2` t
 | 3 | **Python 3.10 or later** on architects' machines (3.13 recommended) | platform | SDEM requires 3.10; Python 3.9 reached end of life in October 2025 |
 | 4 | **Dashboard hosting decided** — local HTML files to start (§7) | owner | dashboards show real architecture |
 | 5 | **Copilot and OCR policies** known — Copilot allowed or not (no MCP); reading text in pictures allowed or `--ocr off` | platform | SDEM works without Copilot; with it, Copilot files must match the pinned release |
-| 6 | **A2 (BIAN)**: which BIAN to use — the **base** that ships with SDEM (BIAN's public Semantic APIs 14.0.0, Apache-2.0), or your organisation's own, packed with `sdem bian pack` | owner | business connects to applications only through BIAN; the base works for everyone, your own BIAN replaces it |
+| 6 | **BIAN (banking designs only)**: whether to use it, and which — the **base** that ships with the `sdem-bian` extension (BIAN's public Semantic APIs 14.0.0, Apache-2.0), or your organisation's own, packed with `sdem bian pack` | owner | without BIAN, business connects to applications directly (SDEM's core); with it, through BIAN's service domains; the base works for everyone, your own BIAN replaces it |
 
 ## 7. Starting choices — our recommendations
 

@@ -1,62 +1,74 @@
 # The metamodel in plain words
 
-> **Status: current (v0.22.0)** — what SDEM's metamodel contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
+> **Status: current (v0.22.1)** — what SDEM's metamodel contains and how to read it. The full, generated detail is in [`reference/`](reference/README.md); you do not need it to use SDEM.
 
 The **metamodel** decides what SDEM will accept. Every record and every connection is checked against it, and SDEM refuses anything that breaks it. It lives in the `metamodel/` and `schema/` folders, and only the SDEM owner changes it ([how a change is made](sdem-administration.md#when-the-metamodel-changes)).
 
 ## What the metamodel says
 
+These are SDEM's core (metamodel 0.20.0) — the same for every industry. An extension adds to them: [what BIAN adds](#what-an-extension-adds--bian).
+
 ```mermaid
 flowchart LR
-    K["📦 <b>Kinds of thing</b><br/>44 — capability, application,<br/>server … in four layers"]
-    I["↔️ <b>Links inside a layer</b><br/>132 allowed kinds<br/>e.g. a process uses a service"]
-    B["⬍ <b>Connections between layers</b><br/>9 kinds<br/>e.g. a BIAN domain is realised by an application"]
-    R["🔎 <b>Rules for finding connections</b><br/>69 — which data, which evidence,<br/>how sure"]
+    K["📦 <b>Kinds of thing</b><br/>35 — capability, data entity,<br/>application, server … in four layers"]
+    I["↔️ <b>Links inside a layer</b><br/>141 allowed kinds<br/>e.g. a process uses a service"]
+    B["⬍ <b>Connections between layers</b><br/>26 allowed<br/>e.g. a process is served by an application service"]
+    R["🔎 <b>Rules for finding connections</b><br/>23 — which data, which evidence,<br/>how sure"]
     C["🛡️ <b>Controls</b><br/>automatic checks that enforce<br/>all of the above"]
     K --> I --> B --> R --> C
 ```
 
-An organisation adds its own kinds of thing, fields, rules and names **on top** of this metamodel with a profile ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)) — never by editing it. Every kind of thing, link and rule names **where it comes from** (BIAN, ArchiMate 3.2 or TOGAF 10, or an SDEM extension), **why**, and **how sure** — so a reviewer can check it ([provenance](reference/reference-architecture-provenance.md)).
+An organisation adds its own kinds of thing, fields, rules and names **on top** of this metamodel with a profile ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)) — never by editing it. `sdem model integrity --workspace <ws>` prints these figures for the metamodel a design uses.
 
 ## The kinds of thing, by layer
 
 | Layer | Kinds of thing | Examples |
 |---|---|---|
-| **A1 · Business** (10) | what the business does and who does it | capability, value stream and stage, process, activity, business service, business object, actor, role, requirement |
-| **A2 · BIAN Service Domains** (15) | BIAN's standard building blocks | business area and domain, service domain, service operation, control record, business object, business scenario, semantic API … |
-| **A3 · Applications** (8) | the systems that do the work | application component, service, function, interface, API operation, event, data entity, solution building block |
-| **A4 · Technology** (11) | where the systems run | node, device, system software, network, path, technology service and interface, deployment, deployment environment, artifact, network zone |
+| **A1 · Business** (13) | what the business does and who does it | capability, value stream and stage, process, activity, business service, business object, event, interface, actor, role, product, requirement |
+| **A2 · Data** (3) | the information the design keeps | data domain, data entity, data attribute |
+| **A3 · Application** (7) | the systems that do the work | application component, service, function, interface, API operation, event, solution building block |
+| **A4 · Technology** (12) | where the systems run | node, device, system software, network, path, technology service and interface, deployment, deployment environment, artifact, network zone, location |
 
-Plus one *abstract* kind (A4 infrastructure component) that groups the technology an application can run on. A4 is the physical deployment — zones, connections, rules and the 3D view: [A4: the physical deployment](sdem-a4-physical-deployment.md). Every kind with its attributes, sources and reasoning: [entity design](reference/architecture-entity-design.md) · [attribute design](reference/architecture-attribute-design.md).
+Plus one *abstract* kind (A4 infrastructure component) that groups the technology an application can run on. A4 is the physical deployment — zones, connections, rules and the 3D view: [A4: the physical deployment](sdem-a4-physical-deployment.md).
 
-## The eleven connections between layers
+## The connections between layers
 
-Only these eleven are allowed. Each needs **evidence of a named kind** before a person can approve it.
+Only these 26 are allowed. Each needs **evidence of a named kind** before a person can approve it.
 
 | From | Connection | To | Evidence needed |
 |---|---|---|---|
-| A1 capability | is **supported by** | A2 service domain | business architecture document; domain scope assessment |
-| A1 value stream | is **aligned to** | A2 business scenario | process model; scenario suitability review |
-| A1 process | **uses** | A2 service domain | process model |
-| A1 business object | is **aligned to** | A2 business object | business glossary; object alignment review |
-| A2 service domain | is **realised by** | A3 application component | application architecture document |
-| A2 service operation | is **implemented by** | A3 API operation | API contract |
-| A2 business object | is **mapped to** | A3 data entity | data model |
-| A3 application component | is **deployed on** | A4 node, device or system software — what hosts software (ArchiMate 3.2; since metamodel 0.8.0) | deployment design |
-| A3 application component | is **deployed as** | A4 deployment | deployment design |
-| A3 application interface | is **exposed through** | A4 node, device or system software that is internet facing (since metamodel 0.12.0) | network design |
-| A3 application component | is **built as** | A4 artifact — its image or package (since metamodel 0.14.0) | build pipeline |
+| A1 process, actor or role | is **served by** | A3 application service | process model |
+| A1 process | is **automated by** | A3 application function | process model |
+| A1 business service | is **realised by** | A3 application service or component | application architecture document |
+| A1 business event · business interface | is **realised by** | A3 event · application interface | event design · application architecture document |
+| A1 business object | is **mapped to** | A2 data entity | data model |
+| A2 data entity | is **accessed by** | A3 application component, function, service, event or API operation | application architecture document |
+| A2 data entity | is **stored in** | A4 artifact or system software | deployment design |
+| A3 application component | is **deployed on** · **deployed as** | A4 node, device or system software · A4 deployment | deployment design |
+| A3 application component or function | is **served by** | A4 technology service | deployment design |
+| A3 application interface | is **exposed through** | A4 node, device or system software that is internet facing | network design |
+| A3 application component | is **built as** | A4 artifact — its image or package | build pipeline |
+
+## What an extension adds — BIAN
+
+An extension adds kinds of thing, links and rules beside the core's, without changing them ([Extensions guide](sdem-extensions-guide.md)). **`sdem-bian`**, for banking designs, adds a layer between Business and Application — **Service Domains (BIAN)**, so the layers become A1 Business, A2 Service Domains, A3 Data, A4 Application, A5 Technology:
+
+- **15 kinds of thing** — business area and domain, service domain, service operation, control record, business object, business scenario, semantic API …;
+- **7 kinds of connection** to the other layers — a capability *supported by* a service domain, a process *using* one, a service domain *realised by* an application, a service operation *implemented by* an API operation, a BIAN business object *mapped to* a data entity …;
+- **46 rules** for finding them, and BIAN 14's catalogue of 258 service domains.
+
+A design that uses BIAN needs `sdem-bian` installed (SDEM 0.22, R-D2); one that does not is a core design.
 
 ## Four things that look alike
 
 | | **Metamodel** | **Rules for finding connections** | **The registry** | **The formats (schemas)** |
 |---|---|---|---|---|
 | In one word | **types** | **rules** | **real connections** | **form** |
-| Says | an A2 service operation *may be* implemented by an A3 API operation | *how* to find that: match the HTTP method and the payload; high confidence; needs an API contract | *this* operation *is* implemented by *this* API — approved by Jane | which fields a connection record must have |
-| Example | `OPERATION_IMPLEMENTED_BY_API` | `S24` | `PAY-101` | `relationship-registry.schema.json` |
+| Says | an A3 application component *may be* deployed on an A4 node | *how* to find that: the component's `deployed_on` names the node; high confidence; needs a deployment design | *this* component *is* deployed on *this* server — approved by Jane | which fields a connection record must have |
+| Example | `DEPLOYED_ON` | `S33` | `MAP-002` | `relationship-registry.schema.json` |
 | Changed by | the SDEM owner | the SDEM owner | the engine proposes; a person approves | the SDEM owner |
 
-**Quick test:** a real thing like `SO-PI-01` → the registry. A rule with a step, a confidence and the data it needs → the rules. An allowed kind of link with no rule → the metamodel. A list of fields → a schema.
+**Quick test:** a real thing like `APP-BOOK` → the registry. A rule with a step, a confidence and the data it needs → the rules. An allowed kind of link with no rule → the metamodel. A list of fields → a schema.
 
 ## How sure SDEM is
 
@@ -64,14 +76,14 @@ Every proposed connection says how sure the engine is — **high**, **medium** o
 
 ## How the metamodel changes — the stability policy
 
-SDEM's core — its kinds of thing, the eleven connections between layers, the rules inside each layer, the attributes — changes only for a reason (a new release of a standard, a proven error, or the owner's decision on evidence of use), always with a new metamodel version, a recorded migration and the owner's approval, and never by removing something without first marking it deprecated. Your organisation's own needs go into a profile instead ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)). CI holds the core to its last freeze (`metamodel/stability.json`). To see what is not yet settled: `sdem model status`; what your workspaces use: `sdem model usage --root workspaces`. Detail: [`sdem-metamodel-stability.md`](design/sdem-metamodel-stability.md).
+SDEM's core — its kinds of thing, the connections between layers, the rules inside each layer, the attributes — changes only for a reason (a new release of a standard, a proven error, or the owner's decision on evidence of use), always with a new metamodel version, a recorded migration and the owner's approval, and never by removing something without first marking it deprecated. Your organisation's own needs go into a profile instead ([`sdem-profile-spec.md`](design/sdem-profile-spec.md)). CI holds the core to its last freeze (`metamodel/stability.json`). To see what is not yet settled: `sdem model status`; what your workspaces use: `sdem model usage --root workspaces`. Detail: [`sdem-metamodel-stability.md`](design/sdem-metamodel-stability.md).
 
 ## The controls — what SDEM refuses
 
 | What it protects | Controls | SDEM refuses … |
 |---|---|---|
-| **Records** | CTL-01 … 04, 24 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the metamodel does not allow; a record that does not match its format; a BIAN record taken from a design document instead of a BIAN source |
-| **Connections** | CTL-05 … 08 | a connection that is not one of the eleven; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
+| **Records** | CTL-01 … 04, 24 | an unknown kind of thing; a wrong or missing attribute; a link inside a layer that the metamodel does not allow; a record that does not match its format; a BIAN record taken from a design document instead of a BIAN source (with `sdem-bian`) |
+| **Connections** | CTL-05 … 08 | a connection that is not one of those allowed; an approval with no reviewer, date or evidence; any edit to an approved connection (it is superseded instead); a connection to a record that does not exist |
 | **People in charge** | CTL-21, 20, 23 | an approval by an agent; a change without the person behind it; an onboarded design that a person has not loaded |
 | **The engine** | CTL-09, 10, 22 | an engine that finds fewer right connections than the tested runs; output that is not *proposed*; a rule that is not in the metamodel |
 | **The metamodel itself** | CTL-11 … 14 | an item without its source and reasoning; a confidence that breaks the rule; a generated document out of date; any change to the owner's frozen specification |
@@ -105,7 +117,7 @@ The same numbers appear in the [rules specification](design/relationship-rules-s
 | A box, e.g. `A3.APIOperation` | a **kind** of thing — no real record like `API-PI-01` appears |
 | Four columns | the four architectures, A1 to A4 |
 | Thin grey arrow, e.g. `RA3-27 composition` | a link allowed **inside** a layer |
-| Blue arrow, e.g. `S24 IMPLEMENTED_BY` | a rule the engine uses to **propose a connection** |
+| Blue arrow, e.g. `S33 DEPLOYED_ON` | a rule the engine uses to **propose a connection** |
 | Green, orange, dashed or dotted arrow, e.g. `S20` | another rule: reported as a hint, never a connection |
 | Grey box | a kind of thing with no rule between layers, by decision |
 
@@ -113,7 +125,7 @@ To see which connections *do* exist, open a workspace's `mappings.json`, or run 
 
 ## Where the metamodel comes from
 
-Every entity type comes from a **published reference architecture** — BIAN (publicly available), ArchiMate 3.2 or TOGAF 10 (published by The Open Group; sign-in required) — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
+Every entity type comes from a **published reference architecture** — ArchiMate 3.2 or TOGAF 10 in the core, BIAN (publicly available) in `sdem-bian` (published by The Open Group; sign-in required) — or is a documented SDEM extension of one; none is copied from any institution's model, and no BIAN or Open Group text is reproduced ([provenance, entity by entity](reference/reference-architecture-provenance.md)). BIAN®, ArchiMate® and TOGAF® are trademarks of their owners; SDEM is independent and not endorsed by them.
 
 **Rules of use.** Keep historical designs; never overwrite or silently reclassify them. Keep BIAN reference content separate from your own design objects. A connection is a versioned, typed claim with evidence — an AI confidence value is not evidence. *Affected by a change* does not mean *must change*: impact needs an architect's assessment.
 
@@ -127,5 +139,5 @@ The specifications use formal names; in plain words they are:
 | the rules for finding connections | **Architecture Relationship Rules Model** |
 | the engine (`sdem link`) | **Architecture Relationship Inference Engine** |
 | the registry — approved connections (`mappings.json`) | **Architecture Relationship Registry** |
-| the eleven connections | **relationship type catalogue** |
+| the connections between layers | **relationship type catalogue** |
 | one layer's records as a graph · all four joined | **local** · **federated architecture knowledge graph** |

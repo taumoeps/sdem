@@ -1,6 +1,6 @@
 # Configuring SDEM
 
-> **Status: current (v0.22.0)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
+> **Status: current (v0.22.1)** — everything you can set, where, and who decides. SDEM works with no configuration at all; this page is for setting it up for a team.
 
 SDEM has **no configuration file and no server settings**. What you can set is: where your data lives, how design onboarding reads your documents, your tools (VS Code, Copilot), and your workspace repository. The metamodel itself is **not** configurable — it is the same for everyone, and only the SDEM owner changes it.
 
@@ -30,7 +30,7 @@ To start a workspace: onboard designs into a new folder (`sdem load … --worksp
 The workspace repository installs one **released** version of SDEM, named in `requirements.txt`:
 
 ```
-sdem @ git+https://github.com/taumoeps/sdem@v0.22.0
+sdem @ git+https://github.com/taumoeps/sdem@v0.22.1
 ```
 
 Never point it at `main`. If your network cannot reach GitHub, mirror the SDEM repository internally and point the line at the mirror.
@@ -62,11 +62,11 @@ You **cannot** change how sure SDEM is allowed to be: onboarded records are neve
 
 ## Your BIAN layer (`sdem bian`)
 
-SDEM ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2.0; `bian/`). To use your organisation's own BIAN instead, pack it once (`sdem bian pack <folder> -o bian/our-bian.json`, kept in your workspace repository) and use `--base bian/our-bian.json`. Every A2 record records which BIAN it came from.
+For a banking design, the [`sdem-bian`](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian) extension ships with a **base BIAN** — BIAN's public Semantic APIs 14.0.0 (Apache-2.0); SDEM itself has no BIAN since 0.22. To use your organisation's own BIAN instead, pack it once (`sdem bian pack <folder> -o bian/our-bian.json`, kept in your workspace repository) and use `--base bian/our-bian.json`. Every A2 record records which BIAN it came from.
 
 | Option | Means |
 |---|---|
-| `--base` · `--base <file>` · `<folder>` | the BIAN to import from: the base that ships with SDEM · your own pack · a folder of BIAN's files (one must be named) |
+| `--base` · `--base <file>` · `<folder>` | the BIAN to import from: the base that ships with `sdem-bian` · your own pack · a folder of BIAN's files (one must be named) |
 | `--only <names>` · `--from <file>` · `--all` | which service domains to import (you must choose; a whole release is about 7,000 records) |
 | `--patterns <csv>` | asset type and functional pattern per service domain (`service domain,asset type,functional pattern`) — for domains SDEM cannot work them out for, or to correct a derived one |
 | `--descriptions` | include BIAN's descriptions — from a folder of BIAN's files only (the base leaves them out) |

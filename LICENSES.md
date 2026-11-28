@@ -8,8 +8,7 @@ SDEM is published under the **Apache License 2.0** (`LICENSE`). This page says w
 |---|---|
 | **SDEM core framework** — the tool (`sdem/`), tests, scripts, CI and Copilot files (`.github/`), templates (`templates/`), made-up examples (`examples/`) | Apache License 2.0 (`LICENSE`), as granted by its contributors, to the extent of their rights in what they contributed |
 | **SDEM documentation, metamodel and schemas** — `docs/`, `README.md` and the other Markdown files, `metamodel/`, `schema/` | Apache License 2.0, except third-party content identified in `THIRD_PARTY.md` |
-| **BIAN Semantic APIs** — the base BIAN in `bian/` (`base-*.json`) | BIAN e.V.'s Apache License 2.0 (`bian/LICENSE`); what was changed is stated in `bian/README.md` |
-| **SDEM's inference record** — `bian/inferences-*.json` | SDEM's own work (Apache License 2.0, `LICENSE`): values inferred from BIAN's public sources, each citing them |
+| **BIAN Semantic APIs** — the base BIAN | not in SDEM since 0.22: it ships with the separate `sdem-bian` extension ([sdem-extensions](https://github.com/taumoeps/sdem-extensions/tree/main/metamodel/bian)), under BIAN e.V.'s Apache License 2.0 (`sdem_bian/data/catalogue/LICENSE`; what was changed: `sdem_bian/data/catalogue/README.md`) |
 | **Your organisation's architecture data** — workspaces, design exports, outputs | **not part of SDEM** and not licensed by it; controlled by your organisation's own intellectual-property and confidentiality arrangements |
 | **Your organisation's configurations** — transform rules, BIAN selections, code owners, CI settings | ownership governed by the agreements that apply to the people who make them |
 | **Your organisation's modifications to SDEM** | ownership governed by authorship, employment and contractual arrangements; the Apache License 2.0 lets you make and keep them |
@@ -23,7 +22,7 @@ Trademarks — BIAN®, ArchiMate®, TOGAF® — belong to their owners and are n
 - **Internal use in any organisation**, across any number of teams — permitted.
 - **Private modifications and extensions** — permitted.
 - **Not publishing your modifications** — permitted; there is no obligation to share or contribute them.
-- **Redistribution** — permitted, under the licence's conditions (§4): give recipients a copy of the licence, mark files you changed, and keep the copyright, patent, trademark and attribution notices (for the base BIAN, `bian/LICENSE` and `bian/README.md`).
+- **Redistribution** — permitted, under the licence's conditions (§4): give recipients a copy of the licence, mark files you changed, and keep the copyright, patent, trademark and attribution notices (for the base BIAN, in `sdem-bian`: its `LICENSE` and `README.md` beside the catalogue).
 
 ## What the licence does not do
 

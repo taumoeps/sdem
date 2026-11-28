@@ -21,6 +21,56 @@ from .layers import FILES
 def _item(kind, text, **k): return {'kind': kind, 'text': text, **{a: b for a, b in k.items() if b is not None}}
 
 
+def verdicts(ws, h, blocking, unresolved, warnings, complete):
+    """CPL-21: each of SDEM's verdicts on the design, apart — one question each, none implying another (an outside review, 2026-11-29: a
+    design can be structurally complete and still not ready to approve). Each is {id, question, verdict, ok, says}; ok is True, False or
+    None (not asked of this design)."""
+    out = []
+    def v(id, question, ok, verdict, says): out.append({'id': id, 'question': question, 'ok': ok, 'verdict': verdict, 'says': says})
+    mid = None
+    try:
+        from .model_health import integrity_check
+        mid = integrity_check(ws)
+        v('integrity', 'Is the design well-formed as the metamodel defines it?', mid['met'], 'met' if mid['met'] else 'not met',
+          f"SDEM's metamodel-integrity rules: {mid['checked']} checked" + ('' if mid['met'] else ' — not met: ' + ', '.join(mid['not_met'])) + ' (sdem model integrity --check)')
+    except Exception as e:
+        v('integrity', 'Is the design well-formed as the metamodel defines it?', None, 'not checked', f'could not be checked: {e}'[:200])
+    m4 = next((r for r in (mid or {}).get('rules', []) if r['id'] == 'MID-04'), None)   # sdem check itself, as MID-04 runs it — the two never disagree
+    warn = sum(1 for x in warnings if x['kind'] == 'advice')
+    if m4:
+        v('conformance', 'Does every record and link pass the metamodel and the profile?', m4['status'] == 'met', 'passes' if m4['status'] == 'met' else 'fails',
+          f"{m4['evidence']}, {warn} warning(s)")
+    else:
+        errs = sum(1 for b in blocking if b['kind'] == 'check')
+        v('conformance', 'Does every record and link pass the metamodel and the profile?', errs == 0, 'passes' if errs == 0 else 'fails', f'sdem check: {errs} error(s), {warn} warning(s)')
+    if complete and complete['records_checked']:
+        ok = not complete['gaps'] and not complete.get('inferred_to_confirm')
+        v('completeness', 'Does every record reach the layers it should, by what is stated or approved?', ok, 'complete' if ok else 'gaps',
+          f"{complete['records_connected']} of {complete['records_checked']} records connected" + (f", {complete['gaps']} gap(s)" if complete['gaps'] else '')
+          + (f", {complete['inferred_to_confirm']} only by an inferred link" if complete.get('inferred_to_confirm') else '') + ' — inferred and proposed links do not count')
+    else:
+        v('completeness', 'Does every record reach the layers it should, by what is stated or approved?', None, 'not measured', 'no completeness standard applies to this design')
+    unknown = [x for x in unresolved + warnings if x['kind'] in ('value_unknown', 'optional_value_unknown')]   # required or optional; a planned record's too
+    planned = sum(1 for x in unknown if x['text'].endswith('(planned)'))
+    inferred = sum(1 for u in unresolved if u['kind'] == 'inferred_unconfirmed')
+    ok = not unknown and not inferred
+    v('maturity', 'Is the design decided in detail — every value known, nothing left inferred?', ok, 'decided' if ok else 'open',
+      f'{len(unknown)} value(s) not known' + (f' ({planned} on planned records)' if planned else '') + f', {inferred} inferred record(s) to confirm (sdem handback)')
+    sec = [x for x in blocking + unresolved + warnings if str(x.get('rule', '')).startswith('SEC-')]
+    if any(x['level'] == 'S' for x in h['layers']) or sec:   # the security extension's layer, or its rules' findings
+        ok = not any(x in blocking for x in sec) and not sec
+        v('security', 'Does the security architecture meet its own rules?', ok, 'met' if ok else 'open',
+          f'{len(sec)} open finding(s) from the security rules' + (f", {sum(1 for x in sec if x in blocking)} blocking" if any(x in blocking for x in sec) else '') + ' (sdem comply)')
+    else:
+        v('security', 'Does the security architecture meet its own rules?', None, 'not part of this design', 'no security architecture — the security extension is not included')
+    decisions = [u for u in unresolved if u['kind'] in ('link_to_review', 'event_to_plan', 'inferred_unconfirmed', 'standard_unresolved')]
+    failed = [x['id'] for x in out if x['ok'] is False and x['id'] in ('integrity', 'conformance', 'completeness', 'security')]   # what approval rests on
+    ok = not blocking and not unresolved and not failed and bool(complete is None or not complete.get('inferred_to_confirm'))
+    v('approval', 'Is it ready for a person to approve — the checks met, nothing blocking, nothing waiting on a decision?', ok, 'ready' if ok else 'not ready',
+      (f"not met: {', '.join(failed)}; " if failed else '') + f'{len(blocking)} blocking, {len(decisions)} decision(s) waiting on a person, {len(unresolved) - len(decisions)} other open item(s)')
+    return out
+
+
 def collect(ws):
     from .handback import collect as handback
     ws = Path(ws); h = handback(ws); w = str(ws)
@@ -108,7 +158,8 @@ def collect(ws):
             step(f'sdem data mode {dg["no_mode"][0]} read|write|read_write --workspace {w} --person <you> --rationale "…"', 'a person states whether each access to personal data reads, writes or both')
 
     state = 'blocked' if blocking else 'open' if unresolved or (complete and (complete['gaps'] or complete.get('inferred_to_confirm'))) or any(p['open'] for p in pats) else 'clear'
-    return {'workspace': w, 'name': h['name'], 'state': state,
+    vs = verdicts(ws, h, blocking, unresolved, warnings, complete)
+    return {'workspace': w, 'name': h['name'], 'state': state, 'verdicts': vs,
             'layers': h['layers'], 'missing_layers': [m['level'] for m in h['missing_layers']], 'connections': h['registry'],
             'counts': {'blocking': len(blocking), 'unresolved': len(unresolved), 'warnings': len(warnings)},
             'blocking': blocking, 'unresolved': unresolved, 'warnings': warnings, 'next': nxt, 'completeness': complete, 'patterns': pats, 'patterns_available': avail,
@@ -132,6 +183,11 @@ def render(s, limit=8):
                     + ([f"{c['proposed_to_approve']} by a proposed link between layers, to approve"] if c.get('proposed_to_approve') else [])
             L.append(f"Draft: {c['draft_connected']} of {c['records_checked']} records connected counting what is inferred or proposed — " + '; '.join(rests))
         L += [f"  {len(r['records'])} × {r['message']}: {', '.join(r['records'][:4])}{' …' if len(r['records']) > 4 else ''}" for r in c['by_rule'][:6]]
+    if s.get('verdicts'):   # CPL-21: each verdict apart — one question each
+        L += ['', 'Verdicts — each answers its own question']
+        mark = {True: '✓', False: '✗', None: '·'}
+        L += [f"  {mark[x['ok']]} {x['id'].capitalize():<13} {x['verdict']:<24} {x['says']}" for x in s['verdicts']]
+        L.append('')
     for p in s.get('patterns') or []:   # CPL-11
         n = len(p['open'])
         L.append(f"Pattern {p['title']} ({p['anchor']}): {p['in_place']} of {p['parts']} parts in place" + (f' — {n} to decide' if n else ' — nothing missing')

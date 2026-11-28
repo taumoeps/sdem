@@ -1,6 +1,6 @@
 # Protecting the repository — so a person approves what matters
 
-> **Status: current (v0.22.0)** — branch protection and code owners are GitHub settings the repository's owner turns on (steps below). **Most readers protect their workspace repository** (§1–§4); the SDEM project's own settings are in §5. Why it matters, for builders: [`sdem-agent-platform-principles.md`](design/sdem-agent-platform-principles.md) §3.
+> **Status: current (v0.22.1)** — branch protection and code owners are GitHub settings the repository's owner turns on (steps below). **Most readers protect their workspace repository** (§1–§4); the SDEM project's own settings are in §5. Why it matters, for builders: [`sdem-agent-platform-principles.md`](design/sdem-agent-platform-principles.md) §3.
 
 SDEM's controls refuse bad data and refuse an agent's or tool's name as a reviewer (CTL-21). They **cannot** stop someone — or an agent with a terminal — from typing a person's name. The final safeguard is GitHub: **nothing reaches `main` without a pull request that a person reviews and the checks pass.** That is a repository setting, not code — until it is on, approval by a reviewed pull request is a practice, not a control.
 
@@ -49,4 +49,4 @@ Try `git push` of a small change straight to `main` — it should be refused. Op
 
 ## 5. The SDEM project itself (maintainers only)
 
-The public SDEM repository is protected the same way, with its own names: `.github/CODEOWNERS` covers the metamodel (`metamodel/`, `schema/`), the base BIAN (`bian/`), the documentation and `.github/`; the required status check is the **`validate`** job (tests, `sdem model check`, the CLI commands, the installed package). **One maintainer?** GitHub does not let you approve your own pull request: add a second reviewer, or set Required approvals to **0** and keep the pull request, the code-owner rule and the status checks — your merge is then the person's act, on record.
+The public SDEM repository is protected the same way, with its own names: `.github/CODEOWNERS` covers the metamodel (`metamodel/`, `schema/`), the documentation and `.github/` (the base BIAN is the `sdem-bian` extension's, in sdem-extensions, since 0.22); the required status check is the **`validate`** job (tests, `sdem model check`, the CLI commands, the installed package). **One maintainer?** GitHub does not let you approve your own pull request: add a second reviewer, or set Required approvals to **0** and keep the pull request, the code-owner rule and the status checks — your merge is then the person's act, on record.

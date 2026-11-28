@@ -2,6 +2,15 @@
 
 > Entries before 0.7.0 describe the project under its former name, **SDMM (BIAN Service Domain Mapping Model)**, and its former terms; they are kept as written.
 
+## 0.22.1 — the documents describe the core as it is (2026-11-29)
+
+- **No document says SDEM ships BIAN.** 0.22.0 moved BIAN — its catalogue, licence and the banking examples — into `sdem-bian`, but several guides still said the base BIAN *ships with SDEM* or is *inside SDEM*, that the Payments example ships with it, and that business connects to applications *only through BIAN*. They now say where each lives, that a banking design starts with `sdem new … --with bian` (`sdem-bian` installed), and that a core design connects business to applications directly. The walk-throughs that start a banking design say so.
+- **The licence files**: `LICENSES.md` and `THIRD_PARTY.md` say SDEM contains no BIAN content since 0.22; BIAN's Semantic APIs, with BIAN's licence, are `sdem-bian`'s.
+- **The metamodel guide is the core's**: 35 kinds of thing in Business, Data, Application and Technology, 141 links inside a layer, 26 connections between layers, 23 rules for finding them — and a section on what `sdem-bian` adds. It still showed 0.19's 44 kinds, 9 kinds of connection and 69 rules, with BIAN as A2.
+- **`sdem status` gives each verdict apart** (CPL-21): integrity, conformance, completeness, maturity, security and approval — each its own question, so a design that is complete and well-formed is not read as ready to approve; approval waits for the checks and for every decision a person still has to make. Also in `--json` (`verdicts`).
+- **`sdem status` says BLOCKED when `sdem check` fails**: in a workspace started with its network zones (`sdem new --hosting`), a shape in no zone is an error for `sdem check` (LC-16) but `sdem status` listed it as a warning and said OPEN.
+- **A test keeps them so** (BX-17): the guide's figures are counted from the metamodel, and a stale sentence about BIAN in any user document, skill or licence file fails the suite.
+
 ## 0.22.0 — SDEM's core industry-neutral; BIAN an extension (2026-11-26)
 
 **Upgrading a banking design: install `sdem-bian` 1.3.0 first** — `python -m pip install "sdem-bian @ git+https://github.com/taumoeps/sdem-extensions@bian-v1.3.0#subdirectory=metamodel/bian"`. Without it, SDEM 0.22 refuses a design that uses BIAN and says what to install (R-D2). Nothing in a workspace's files changes: `sdem migrate` moves it to metamodel 0.20.0, version only. A design without BIAN needs nothing more.

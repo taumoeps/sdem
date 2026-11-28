@@ -1,6 +1,6 @@
 # Create a new design
 
-> **Status: current (v0.22.0)** — for architects: from "I need a design for a new general ledger" to a checked business design, its requirements and SDEM's inference of the other layers — ready for you to review and decide. The steps are the ones three agents followed in the [measurement](evidence/types-search-measurement.md) without a single refused submission. Synthetic examples only.
+> **Status: current (v0.22.1)** — for architects: from "I need a design for a new general ledger" to a checked business design, its requirements and SDEM's inference of the other layers — ready for you to review and decide. The steps are the ones three agents followed in the [measurement](evidence/types-search-measurement.md) without a single refused submission. Synthetic examples only.
 
 ## The idea
 
@@ -8,7 +8,7 @@ You decide; something else does the typing. Your business design (A1) and your r
 
 | Step | Who | Command |
 |---|---|---|
-| 1. Start a workspace | you | `sdem new --workspace workspaces/ledger --person <you>` |
+| 1. Start a workspace | you | `sdem new --workspace workspaces/ledger --person <you> --with bian` — a banking design, with `sdem-bian` installed: AID infers the layers below the business from BIAN. In a core design (no `--with bian`) you write the application and technology layers too, and `sdem link` proposes the links between them |
 | 2. Write the business design (A1) | your agent, or you | a change set → `sdem change propose` |
 | 3. Add the measurable requirements | your agent, or you | `sdem requirements propose` |
 | 4. Infer A2, A3, A4 | SDEM (`sdem aid`), when you ask | `sdem aid --workspace … --person <you>` |

@@ -134,7 +134,7 @@ Three generated pages let you explore an architecture without reading JSON. They
 | `sdem dashboard` | **Workspace Dashboard** — `<workspace>/dashboard.html` | one workspace: what needs attention, review, trace and impact, matrices, changes, controls |
 | `sdem view` | **Architecture Graph** — `<workspace>/graph/view.html` | the workspace's knowledge graph: A1–A4 records and their links, filter, trace up and down |
 
-**The quickest way in** — one command creates the synthetic Payments workspace, builds its graph and writes all three pages:
+**The quickest way in** — one command creates the synthetic Payments workspace, builds its graph and writes all three pages. The Payments example is a banking design: it ships with the `sdem-bian` extension, so install that first. SDEM's own example, without BIAN, is `--example library-holds`.
 
 ```bash
 sdem new --workspace workspaces/payments --person <you> --example payment-initiation --explore
@@ -239,7 +239,7 @@ The same list is SDEM Home's *Architect tasks* tab. **Effect** says what each do
 
 | Task | Command | Needs | Gives | Inspect it | Effect | Approval |
 |---|---|---|---|---|---|---|
-| Start a workspace | `sdem new --workspace <ws> --person <you> [--example payment-initiation --explore]` | a name | a workspace (empty, or the synthetic example) | sdem check --workspace <ws> | changes the architecture (checked, recorded) | no — your decision to start it |
+| Start a workspace | `sdem new --workspace <ws> --person <you> [--with bian] [--example library-holds | payment-initiation --explore]` (BIAN and the Payments example need `sdem-bian`) | a name | a workspace (empty, or the synthetic example) | sdem check --workspace <ws> | changes the architecture (checked, recorded) | no — your decision to start it |
 | Write or change records | `sdem change propose <change-set.json> --workspace <ws> --agent architect --person <you> (fields: sdem types)` | a change set | records added, updated or retired; a change event with its impact | sdem change show <CS-id> | changes the architecture (checked, recorded) | no — checked; review in the pull request |
 | Bring in existing designs | `sdem transform run <export> -o <dir> · sdem load <dir> --workspace <ws> --person <you>` | a Confluence export, a folder of designs, or one Word or Excel file | records from past designs | the dashboard, Designs & gaps | changes the architecture (checked, recorded) | yes — you choose what to load |
 | Fill the gaps with AID | `sdem aid --workspace <ws> --person <you>` | part of a design (e.g. A1 with BIAN operations) | inferred records, marked, and proposed connections | the dashboard; sdem aid confirm &#124; reject | proposes — a person decides | yes — confirm or reject each |
@@ -351,7 +351,7 @@ The steps in order, from your designs to the knowledge graph:
 
 #### Choosing your BIAN service domains
 
-**Nobody needs to know which to pick.** All 258 service domains of BIAN 14.0.0 are the **catalogue** — your organisation's shared BIAN layer, or the base BIAN that ships with SDEM — and the catalogue is read, never copied. A workspace holds **only the domains its design needs**: `sdem aid` brings them in from what you wrote, each marked *inferred* with the reason, for you to confirm or reject. To choose by hand instead:
+**Nobody needs to know which to pick.** All 258 service domains of BIAN 14.0.0 are the **catalogue** — your organisation's shared BIAN layer, or the base BIAN that ships with `sdem-bian` (a banking design needs it installed) — and the catalogue is read, never copied. A workspace holds **only the domains its design needs**: `sdem aid` brings them in from what you wrote, each marked *inferred* with the reason, for you to confirm or reject. To choose by hand instead:
 
 | Option | Gives the workspace | When |
 |---|---|---|
@@ -391,7 +391,7 @@ flowchart LR
 Six steps, the same for every area. Each links to where it is written in full.
 
 1. **Install and practise.** [Install](../README.md#quick-start) SDEM, then do the user guide's [15-minute quick start](#5-quick-start--15-minutes) on the made-up example: check the data, build the knowledge graph, trace a business process down to its technology.
-2. **Start your workspace** — `sdem new --workspace workspaces/<area> --person <you>`: the folder where your area's architecture is kept; it reads BIAN's service domains from the catalogue and holds only the ones your design needs.
+2. **Start your workspace** — `sdem new --workspace workspaces/<area> --person <you> --with bian` for a banking design (with `sdem-bian` installed), or without `--with bian` for a core design: the folder where your area's architecture is kept; a BIAN design reads BIAN's service domains from the catalogue and holds only the ones it needs.
 3. **Bring in your design** — one of two routes:
 
    | Your design | What happens | In full |
@@ -407,7 +407,7 @@ Every task step by step: the user guide's [workflow examples](#8-workflow-exampl
 
 ## 5. Quick start — 15 minutes
 
-This uses the synthetic example that ships with SDEM — a made-up bank's payments architecture, all four layers, already linked, with requirements. No clone is needed. Type each command in the terminal; replace `your.name` with your own name.
+This uses the synthetic Payments example, which ships with the `sdem-bian` extension (install it first) — a made-up bank's payments architecture, every layer, already linked, with requirements. No clone is needed. Type each command in the terminal; replace `your.name` with your own name.
 
 **Step 1 — start a workspace from the example, and name it so commands stay short:**
 ```bash
@@ -585,11 +585,11 @@ The *Journey* column groups commands by task: **J1** check · **J2** propose lin
 | `sdem workbench --workspace <dir>` | J7 | **the workbench**: one offline page for the workspace — designs by layer and type, data, knowledge graph, trace and impact, reviews and changes, documents, and the SDEM framework | to work through a workspace in one place | `sdem home` |
 | `sdem document verify <narrative.md> --workspace <dir>` | J7 | **checks a narrative an agent wrote** (skill `sdem-design-narrative`) against the workspace: every cited `[ID]` exists, every stated link exists and is approved, named records are cited, inferred records are said to be inferred, gaps are mentioned; `sdem document` itself stays structured (UX-D09…D11) |
 | `sdem new --organisation <name> --person <you>` | J9 | **starts an organisation**: its folder, a starter base profile `profiles/<name>-base.json` (its design specification, checked) and `workspaces/`; a workspace started in it (`--workspace workspaces/<area> --organisation <name>`, or from inside its folder) gets its own profile extending the base (WS-08…WS-10) |
-| `sdem new --workspace <dir> --person <you>` | J9 | **starts a workspace**: the four layers — A2 your BIAN layer (the shared one, or all of the base BIAN; `--no-bian` for none) — and an empty set of connections; checked, recorded in `workspace.json` |
+| `sdem new --workspace <dir> --person <you>` | J9 | **starts a workspace**: SDEM's core layers — Business, Data, Application, Technology — and an empty set of connections (`--with bian` adds BIAN's layer, from the shared one or the base BIAN, with `sdem-bian` installed); checked, recorded in `workspace.json` |
 | `sdem bian select --workspace <dir> --only <names…> --person <you>` (or `--from <file>`, `--all`) | J9 | **sets exactly which BIAN service domains one workspace holds**; `sdem bian add` adds beside what it holds — checked, recorded; refuses to remove a domain an approved connection uses |
 | `sdem load <candidates> --workspace <dir> --person <you> --exclude <ids>` | J9 | **loads** the candidate entities you keep into a workspace — checked first, recorded; `--a2` adds your BIAN layer; `--dry-run` | after reviewing a transform (§8.7) | `sdem link` |
 | `sdem designs --workspace <dir> [--entity <id>] [--gaps] [--category …] [--status open]` | J9 | the pages onboarded designs came from, and the **gap records** — what did not fit an entity, by category; `sdem trace` also ends with an entity's pages | after a load; to find what still needs a person | — |
-| `sdem bian list --base` · `sdem bian import --base --all -o <file>` (or `--only <names…>`, `--from <file>`) · `sdem bian pack <folder> -o <file>` | J9 | your **BIAN (A2) layer**: from the **base BIAN** that ships with SDEM (BIAN's public Semantic APIs 14.0.0), from your own packed BIAN (`--base <file>`), or from a folder of BIAN's files; imports the service domains you name, checked, with a report of what to confirm; `--patterns`, `--previous`; from a folder also `--descriptions`, `--objects` | once, before onboarding; again for a new BIAN release | `sdem load … --a2 <file>` |
+| `sdem bian list --base` · `sdem bian import --base --all -o <file>` (or `--only <names…>`, `--from <file>`) · `sdem bian pack <folder> -o <file>` | J9 | your **BIAN (A2) layer**: from the **base BIAN** that ships with `sdem-bian` (BIAN's public Semantic APIs 14.0.0), from your own packed BIAN (`--base <file>`), or from a folder of BIAN's files; imports the service domains you name, checked, with a report of what to confirm; `--patterns`, `--previous`; from a folder also `--descriptions`, `--objects` | once, before onboarding; again for a new BIAN release | `sdem load … --a2 <file>` |
 | `sdem bian inference list` · `show <id>` · `accept` · `challenge` · `change` · `reject <id> --person <you> --reason "…"` | J9 | SDEM's **inference record**: the asset types and functional patterns it infers for the 66 BIAN service domains BIAN does not publish them for — each with source, reasoning, confidence, status and history; the import applies **accepted** entries only ([BIAN inferences](reference/bian-inferences.md)) |
 | `sdem designs resolve <gap id …> --workspace <dir> --person <you> --note "<what you did>"` · `accept` (same options) · `reopen` | J9 | closes a gap — *resolved* (now recorded in an entity) or *accepted* (deliberately not modelled); reopens one; each step kept in the gap's history | working down the gaps | `sdem designs --gaps --status open` |
 | `sdem agents install [--platform copilot claude codex gemini] [--dry-run]` | AG | puts SDEM's instructions and skills for AI agents into your workspace repository: one `AGENTS.md` for every agent, `CLAUDE.md` pointing to it, the same skills in `.claude/skills/` and `.agents/skills/`, Gemini's settings and Copilot's files | "I want to use Claude Code / Codex / Gemini CLI with SDEM" | `sdem copilot install` |
@@ -626,7 +626,7 @@ flowchart LR
 
 *Goal: get your four architecture datasets accepted by SDEM.*
 
-1. Start from the example as a baseline and put your records in it:
+1. Start from an example as a baseline and put your records in it — `library-holds` for a design without BIAN, `payment-initiation` for a banking one (with `sdem-bian` installed):
    ```bash
    sdem new --workspace work/my-workspace --person your.name --example payment-initiation
    ```
@@ -811,7 +811,7 @@ mkdir -p work/imports && cp -r examples/designs/confluence-folder-export work/im
 sdem transform inspect work/imports/payarch --ocr off                    # what is in the export, what SDEM can read — changes nothing
 sdem transform run work/imports/payarch -o work/history --ocr off        # suggestions + work/history/extraction-report.md
 # read the report; note the ids you reject
-sdem new --workspace workspaces/history --person <your name>               # start the workspace once — BIAN is read from the catalogue, not copiedomains
+sdem new --workspace workspaces/history --person <your name> --with bian   # start the workspace once — BIAN is read from the catalogue, not copied
 sdem load work/history --workspace workspaces/history --person <your name> --exclude HIS-A3-PAYMENT-ORDER
 sdem link --workspace workspaces/history --out work/links                      # then review, approve, build — as in §8.2
 ```

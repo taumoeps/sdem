@@ -202,7 +202,7 @@ Start the agent **in the folder** where you ran `sdem agents install` — it rea
 
 ## 8. A made-up workspace to practise on
 
-Start a workspace from the synthetic payments example that ships with SDEM — no clone needed:
+Start a workspace from the synthetic payments example — it ships with the `sdem-bian` extension, so install that first (`sdem new --example library-holds` is SDEM's own, without BIAN) — no clone needed:
 
 ```bash
 sdem new --workspace workspaces/payments --person your.name --example payment-initiation   # layers, links and requirements, as a recorded baseline

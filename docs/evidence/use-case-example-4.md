@@ -21,7 +21,7 @@ Each command does one job. The steps below use them in this order.
 
 | # | Command | In plain words |
 |---|---|---|
-| 0 | `sdem new --workspace workspaces/history --person <you>` | **Start the workspace** — once. Creates the folder where this area's architecture is kept; BIAN's service domains are read from the catalogue |
+| 0 | `sdem new --workspace workspaces/history --person <you> --with bian` (a banking design; without `--with bian`, a core design) | **Start the workspace** — once. Creates the folder where this area's architecture is kept; BIAN's service domains are read from the catalogue |
 | 1 | `sdem transform inspect <export folder>` | **Look before you start.** Shows what is in your export and what SDEM can read. Changes nothing |
 | 2 | `sdem transform run <export folder> -o work/history` | **Read the designs.** Turns the pages into a list of *suggested* architecture items, and writes a report for you to read |
 | 3 | *(you read `work/history/extraction-report.md`)* | **Check the suggestions.** Decide which are wrong |

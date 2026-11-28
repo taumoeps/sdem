@@ -621,6 +621,17 @@
         }
       ],
       "summary": "SDEM's core is industry-neutral: BIAN is the sdem-bian extension — its layer, catalogue, rules, inference, commands, examples and documents; SDEM 0.22 — Solution Domain Enterprise Model; an Extensions guide; a core example (library-holds); metamodel 0.20.0, frozen."
+    },
+    {
+      "version": "0.22.1",
+      "date": "2026-11-29",
+      "kind": "patch",
+      "metamodel": "0.20.0",
+      "migration": null,
+      "breaking": [],
+      "deprecations": [],
+      "actions": [],
+      "summary": "sdem status gives each verdict apart — integrity, conformance, completeness, maturity, security, approval (CPL-21); the user documents describe the core as it is: no document says SDEM ships BIAN, the metamodel guide's figures are the core's own and a test keeps them so (BX-17); the licence files say SDEM contains no BIAN content."
     }
   ]
 }

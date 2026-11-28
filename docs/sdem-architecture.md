@@ -1,6 +1,6 @@
 # SDEM architecture — how it is built and where data lives
 
-> **Status: current (v0.22.0)** — for architects and platform owners who run SDEM: its parts, where every file lives, how a change flows, what checks it, and its limits. How each part was designed, for builders: [`design/`](design/README.md).
+> **Status: current (v0.22.1)** — for architects and platform owners who run SDEM: its parts, where every file lives, how a change flows, what checks it, and its limits. How each part was designed, for builders: [`design/`](design/README.md).
 
 ## The parts
 
@@ -70,7 +70,7 @@ flowchart LR
 
 | Where | What | Committed? |
 |---|---|---|
-| **The base BIAN** — `bian/` (inside the installed SDEM) | BIAN's public Semantic APIs 14.0.0, packed — where your BIAN layer is imported from unless you use your own | in the SDEM repository; replaced by your own pack if you have one |
+| **The base BIAN** — in the installed `sdem-bian` (`sdem_bian/data/catalogue/`) | BIAN's public Semantic APIs 14.0.0, packed — where a banking design's BIAN layer is imported from unless you use your own | in the sdem-extensions repository; replaced by your own pack if you have one; not used by a design without BIAN |
 | **The metamodel** — `metamodel/`, `schema/` (inside the installed SDEM) | the kinds of thing, links, rules, controls, file formats | in the SDEM repository; changed only by the SDEM owner |
 | **A workspace** — a folder, e.g. `workspaces/payments/` | your data — see below | **yes**, in your private workspace repository |
 | **The graph store** — e.g. `work/graph/` | the knowledge graph `sdem build` writes | no — rebuilt from the workspace at any time |

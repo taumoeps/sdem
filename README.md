@@ -9,7 +9,7 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](pyproject.toml)
 
 > [!NOTE]
-> **v0.22.0 · ready for evaluation on synthetic data.** Using it on real designs needs a pilot ([what that takes](#using-sdem-on-real-designs)). SDEM uses BIAN's published Semantic APIs under BIAN's licence; it is **not an official BIAN standard and is not endorsed by BIAN**.
+> **v0.22.1 · ready for evaluation on synthetic data.** Using it on real designs needs a pilot ([what that takes](#using-sdem-on-real-designs)). SDEM uses BIAN's published Semantic APIs under BIAN's licence; it is **not an official BIAN standard and is not endorsed by BIAN**.
 
 ![The Payment example on DESNRE: SDEM's verdict on the design's integrity, and its five layers drawn from SDEM's knowledge graph](docs/images/desnre-payment-example.png)
 
@@ -33,7 +33,7 @@
 ```bash
 mkdir my-sdem && cd my-sdem
 python3 -m venv .venv && source .venv/bin/activate          # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@v0.22.0"
+python -m pip install "sdem @ git+https://github.com/taumoeps/sdem@v0.22.1"
 sdem --version
 ```
 

@@ -1,6 +1,6 @@
 # From a design to a trace — how SDEM links and traces
 
-> **Status: current (v0.22.0)** — for architects: the question every architect asks first — *how does SDEM know that a business requirement depends on a server?* — answered step by step: how a design gets into SDEM, where every link comes from, what `sdem trace` does with them, and what comes from ArchiMate, TOGAF, BIAN and SDEM itself. Everything in the examples is made up.
+> **Status: current (v0.22.1)** — for architects: the question every architect asks first — *how does SDEM know that a business requirement depends on a server?* — answered step by step: how a design gets into SDEM, where every link comes from, what `sdem trace` does with them, and what comes from ArchiMate, TOGAF, BIAN and SDEM itself. Everything in the examples is made up.
 
 ## 1. The short answer
 

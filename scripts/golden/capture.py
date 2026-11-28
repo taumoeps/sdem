@@ -35,7 +35,7 @@ _EX_TAGS = _ex_tags()
 
 
 def norm(x, tmp):
-    if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k not in ('sdem', 'phases_by')}   # phases_by: who gave BIAN's part of sdem aid (MX-54) — provenance, R-D11
+    if isinstance(x, dict): return {k: ('<volatile>' if VOLATILE.match(k) else norm(v, tmp)) for k, v in x.items() if k not in ('sdem', 'phases_by', 'verdicts')}   # verdicts: sdem status's separate verdicts, new in 0.22.1 (CPL-21) — not an answer 0.19 gave; phases_by: who gave BIAN's part of sdem aid (MX-54) — provenance, R-D11
     if isinstance(x, list): return [norm(v, tmp) for v in x]
     if isinstance(x, str):
         for p, tag in (*_EX_TAGS, (tmp, '<tmp>'), (ROOT, '<root>')):   # every spelling of the folder: as given, resolved, and with / (Windows)

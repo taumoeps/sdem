@@ -1,6 +1,6 @@
 # SDEM pilot plan — one domain, ten weeks
 
-> **Status: current (v0.22.0)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own workspace. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
+> **Status: current (v0.22.1)**. The domain is chosen by the criteria below when the preconditions are met. A small, real trial of SDEM before wider use: one domain, two or three architects, ten weeks, a go / adjust / stop decision at the end. **The plan works for any domain** — SDEM's metamodel covers the whole enterprise (A1–A4, every BIAN service domain), and each further domain repeats the same ten weeks with its own workspace. How SDEM is run: [`sdem-operating-model.md`](sdem-operating-model.md).
 
 ## The question the pilot answers
 
@@ -23,7 +23,7 @@
 | Has 3–5 designs in Confluence | there is something real to onboard |
 | Has change coming in the next 2–3 months | the pilot needs a real change to test trace and impact |
 | Its architects are willing and have half a day a week | the pilot depends on their time more than on the tool |
-| Covers business, applications and technology | business connects to applications only through the BIAN layer — start it from the **base BIAN** that ships with SDEM (`sdem bian import --base`), see the [onboarding workflow](sdem-onboarding-workflow.md#your-bian-a2-layer) |
+| Covers business, applications and technology | in SDEM's core, business connects to applications directly; a banking pilot that uses BIAN installs `sdem-bian` and starts its layer from the **base BIAN** it ships (`sdem bian import --base`), see the [onboarding workflow](sdem-onboarding-workflow.md#your-bian-a2-layer) |
 | Mid-sized, not on the critical path | big enough to be real; a slow start hurts no one |
 | Designs reasonably consistent | a fair test of the transform's coverage |
 

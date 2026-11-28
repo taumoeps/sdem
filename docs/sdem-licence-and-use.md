@@ -1,6 +1,6 @@
 # Using SDEM — free for any organisation
 
-> **Status: current (v0.22.0)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
+> **Status: current (v0.22.1)** — what anyone may do with SDEM, what it contains from others, and what it does not claim. For an organisation's full checklist before go-live: the [adoption checklist](sdem-adoption-checklist.md). This page explains the licence in plain words; **it is not legal advice**.
 
 ## In one sentence
 
@@ -17,7 +17,7 @@ SDEM is not limited to any industry or kind of organisation, and no one has excl
 | Change it — your own BIAN, design formats, rules, code | ✅ | none |
 | Keep your changes to yourself | ✅ | none — there is no obligation to share them |
 | Use it commercially — inside your organisation, a consultancy or a product | ✅ | none |
-| **Give SDEM to someone else** — redistribute it, or ship it inside your own product | ✅ | give them a copy of the licence, mark the files you changed, and keep the existing copyright and attribution notices (including BIAN's in `bian/`) — the licence's conditions (§4), which apply only when you pass SDEM on |
+| **Give SDEM to someone else** — redistribute it, or ship it inside your own product | ✅ | give them a copy of the licence, mark the files you changed, and keep the existing copyright and attribution notices (and, if you pass on `sdem-bian` too, BIAN's beside its catalogue) — the licence's conditions (§4), which apply only when you pass SDEM on |
 
 The Apache License 2.0 also includes a **patent licence** (§3): each contributor licenses any of their patents that their contribution necessarily uses. It ends for anyone who sues claiming SDEM infringes a patent. It does not cover patents held by people who did not contribute.
 
@@ -34,7 +34,7 @@ What SDEM reads, writes and stores, and what optional tools around it may send: 
 | Part | Whose | Licence |
 |---|---|---|
 | The tool, the metamodel, the schemas, the documentation, the templates, the made-up examples | the SDEM project | **Apache-2.0** (`LICENSE`) |
-| The **base BIAN** (`bian/`) — BIAN's Semantic APIs 14.0.0, packed; descriptions left out | **BIAN e.V.**, published openly on GitHub | BIAN's **Apache-2.0** (`bian/LICENSE`, what was changed: `bian/README.md`) |
+| The **base BIAN** — BIAN's Semantic APIs 14.0.0, packed; descriptions left out; in the separate `sdem-bian` extension, not in SDEM since 0.22 | **BIAN e.V.**, published openly on GitHub | BIAN's **Apache-2.0** (`LICENSE` and what was changed, `README.md`, beside `sdem-bian`'s catalogue) |
 
 **Nothing else from others is included.** SDEM's metamodel *names* concepts from published reference architectures and explains each in its own words; it does not copy their text:
 

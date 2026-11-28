@@ -1,6 +1,6 @@
 # How SDEM works
 
-> **Status: current (v0.22.0)** — what SDEM is, the metamodel at its heart, its three components (the data architecture, the CLI, optional AI agents), the BIAN catalogue it ships, the local HTML workbench, and how it compares with other architecture tools. Moved here from the README, which is now a quick start. How a design gets in and how a trace works: [From a design to a trace](sdem-from-design-to-trace.md).
+> **Status: current (v0.22.1)** — what SDEM is, the metamodel at its heart, its three components (the data architecture, the CLI, optional AI agents), the BIAN catalogue it ships, the local HTML workbench, and how it compares with other architecture tools. Moved here from the README, which is now a quick start. How a design gets in and how a trace works: [From a design to a trace](sdem-from-design-to-trace.md).
 
 ## What is an Enterprise Metamodel?
 
@@ -226,7 +226,7 @@ Agent instructions constrain intended behaviour; SDEM's validation and governanc
 
 ## Example — the Payments architecture
 
-The synthetic **Payments** example that ships with SDEM models these approved relationships:
+The synthetic **Payments** example, a banking design that ships with the `sdem-bian` extension, models these approved relationships:
 
 ```mermaid
 flowchart TB
